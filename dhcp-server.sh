@@ -10,8 +10,7 @@ echo 'Restarting Device'
 ip link set "$DEVICE" down
 ip link set "$DEVICE" up
 # Check if ip already assigned
-IP_ASSIGNED=$(ip a | grep -A 5 ens9 | grep 192.168.123.1)
-if [ -z "$IP_ASSIGNED" ]; then
+if [ -z "$(ip a | grep -A 5 ens9 | grep 192.168.123.1)" ]; then
     ip addr add "$ROUTERIP"/24 dev "$DEVICE"  # arbitrary address
 fi
 
@@ -26,7 +25,7 @@ echo 'Creating /etc/dhcpd.conf file'
 cat > /etc/dhcpd.conf <<- EOM
 option domain-name-servers 8.8.8.8, 8.8.4.4;
 option subnet-mask 255.255.255.0;
-option routers 192.168.123.100;
+option routers $ROUTERIP;
 subnet 192.168.123.0 netmask 255.255.255.0 {
     range 192.168.123.150 192.168.123.250;
 }
