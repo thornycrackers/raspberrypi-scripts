@@ -11,7 +11,7 @@ echo 'Restarting Device'
 ip link set "$BRIDGE_INTERFACE" down
 ip link set "$BRIDGE_INTERFACE" up
 # Check if ip already assigned
-if [ -z "$(ip a | grep -A 5 ens9 | grep $ROUTERIP)" ]; then
+if [ -z "$(ip a | grep -A 5 "$BRIDGE_INTERFACE" | grep $ROUTERIP)" ]; then
     ip addr add "$ROUTERIP"/24 dev "$BRIDGE_INTERFACE"  # arbitrary address
 fi
 
